@@ -5,6 +5,7 @@ using System.Net.Mail;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Text;
 
 namespace VishalPatel
 {
@@ -21,9 +22,19 @@ namespace VishalPatel
             string toname = "Vishal Patel";
             string fromemail = txtemail.Text.Trim();
             string fromname = txtname.Text.Trim();
-            string body = txtbody.Text.Trim();
+            StringBuilder body = new StringBuilder();
+            body.Append("<table cellpadding='5' cellspacing='5' width='70%'>");
+            body.Append("<tr>");
+            body.Append("<td style='width:20%'><b>Name:</b></td><td style='width:80%'>" + txtname.Text.Trim() + "</td>");
+            body.Append("</tr><tr>");
+            body.Append("<td><b>Email:</b></td><td>" + txtemail.Text.Trim() + "</td>");
+            body.Append("</tr><tr>");
+            body.Append("<td><b>Subject:</b></td><td>" + txtsubject.Text.Trim() + "</td>");
+            body.Append("</tr><tr>");
+            body.Append("<td><b>Body:</b></td><td>" + txtbody.Text.Trim() + "</td>");
+            body.Append("</tr></table>");
             string sub = "Email from your website visit - " + txtsubject.Text.Trim();
-            var result = SendMail(fromemail, fromname, toemail, toname, body, sub, string.Empty, string.Empty, false);
+            var result = SendMail(fromemail, fromname, toemail, toname, body.ToString(), sub, string.Empty, string.Empty, true);
             if (result)
             {
                 form1.Visible = false;
@@ -43,16 +54,16 @@ namespace VishalPatel
                 System.Net.Mail.MailMessage objMail = new System.Net.Mail.MailMessage();
 
                 //Mail From Field
-                if (!String.IsNullOrEmpty(FromName))
-                {
-                    objMail.From = new MailAddress(FromEmail, FromName);
-                    objMail.Sender = new MailAddress(FromEmail, FromName);
-                }
-                else
-                {
-                    objMail.From = new MailAddress(FromEmail);
-                    objMail.Sender = new MailAddress(FromEmail);
-                }
+                //if (!String.IsNullOrEmpty(FromName))
+                //{
+                //    objMail.From = new MailAddress(FromEmail, FromName);
+                //    objMail.Sender = new MailAddress(FromEmail, FromName);
+                //}
+                //else
+                //{
+                objMail.From = new MailAddress(FromEmail);
+                objMail.Sender = new MailAddress(FromEmail);
+                //}
 
                 //Mail To Field
                 if (!String.IsNullOrEmpty(ToEmails))
